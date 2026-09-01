@@ -1,9 +1,9 @@
 <div align="center">
 
   <!-- Replace with your actual logo URL -->
-  <img src="https://via.placeholder.com/150?text=CertGen+Logo" alt="Project Logo" width="120" />
+  <img src="/src/assets/Images/ITM_logo.png" alt="Project Logo" width="120" />
 
-  # 🎓 CertGen: Automated Certificate Generator
+  # ITM innovation Hackathon: Certificate provider website
 
   **An automated pipeline to generate hundreds of personalized PDF certificates from Excel data and deliver them via a simple web interface.**
 
