@@ -2,6 +2,7 @@ import ssl
 import csv
 import io
 import os
+import json
 import urllib.request
 from PIL import Image, ImageDraw, ImageFont
 
@@ -118,6 +119,11 @@ try:
         with open(manifest_path, "w", encoding="utf-8") as mf:
             json.dump(manifest, mf, indent=2, ensure_ascii=False)
         print(f"✓ Generated manifest: {manifest_path} ({len(manifest)} items)")
+
+        root_manifest = os.path.abspath(os.path.join(OUTPUT_DIR, "..", "..", "certificates.json"))
+        if os.path.exists(root_manifest):
+            with open(root_manifest, "w", encoding="utf-8") as rmf:
+                json.dump(manifest, rmf, indent=2, ensure_ascii=False)
 
         # Summary
         print("\n" + "=" * 60)
