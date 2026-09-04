@@ -47,7 +47,10 @@ async function initCertificates() {
     // 3. Connect real-time search filter
     setupSearch(container, cardObjects);
 
-    // 4. Connect smooth scroll cue
+    // 4. Connect scroll-reveal animation
+    setupScrollObserver();
+
+    // 5. Connect smooth scroll cue
     setupSmoothScroll();
 
   } catch (err) {
@@ -148,7 +151,12 @@ function setupSearch(container, cardObjects) {
     for (const { element, name } of cardObjects) {
       const isMatch = !cleanQuery || name.includes(cleanQuery);
       element.style.display = isMatch ? '' : 'none';
-      if (isMatch) matchCount++;
+      if (isMatch) {
+        matchCount++;
+        if (cleanQuery) {
+          element.classList.add('in-view');
+        }
+      }
     }
 
     if (counter) {
@@ -238,14 +246,50 @@ function openPreviewModal(cert, isPdf) {
   document.addEventListener('keydown', onKeyDown);
 }
 
-// Smooth scroll cue
+// Smooth scroll cues
 function setupSmoothScroll() {
   const downloadBelow = document.querySelector('.download_below');
-  if (!downloadBelow) return;
+  if (downloadBelow) {
+    downloadBelow.addEventListener('click', () => {
+      const target = document.querySelector('.search_bar') || document.querySelector('.certificate');
+      target?.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
 
-  downloadBelow.addEventListener('click', () => {
-    const target = document.querySelector('.search_bar') || document.querySelector('.certificate');
-    target?.scrollIntoView({ behavior: 'smooth' });
+  const scrollTopBtn = document.querySelector('.scroll_top_btn');
+  if (scrollTopBtn) {
+    scrollTopBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+}
+
+// Smooth scroll-reveal observer: reveals cards as user scrolls pass them
+function setupScrollObserver() {
+  if (!('IntersectionObserver' in window)) {
+    // Fallback: show cards immediately if browser lacks IntersectionObserver
+    document.querySelectorAll('.certificate-card').forEach((card) => {
+      card.classList.add('in-view');
+    });
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, {
+    root: null,
+    rootMargin: '0px 0px -40px 0px',
+    threshold: 0.08
+  });
+
+  document.querySelectorAll('.certificate-card').forEach((card) => {
+    observer.observe(card);
   });
 }
 
