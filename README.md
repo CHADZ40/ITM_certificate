@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="/src/assets/Images/ITM_logo.png" alt="ITM Innovation Hackathon Logo" style="width: 70%">
+    <img src="/ITM_certificate/assets/Images/ITM_logo.png" alt="ITM Innovation Hackathon Logo" style="width: 70%">
     <h1>ITM Innovation Hackathon</h1>
 </div>
 
