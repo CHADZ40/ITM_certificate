@@ -12,7 +12,6 @@ env/
 # System-generated files
 .DS_Store
 Thumbs.db
-script.js
 
 # Optional: Uncheck the line below if you don't want to commit generated PDFs
 # certificates/*.pdf

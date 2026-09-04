@@ -53,6 +53,9 @@ async function initCertificates() {
     // 5. Connect smooth scroll cue
     setupSmoothScroll();
 
+    // 6. Connect President contact modal
+    setupPresidentModal();
+
   } catch (err) {
     console.error('Failed to load certificates:', err);
     container.innerHTML = `
@@ -263,6 +266,48 @@ function setupSmoothScroll() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
+}
+
+// Setup President Contact Confirmation Modal
+function setupPresidentModal() {
+  const presidentLink = document.querySelector('header a[href*="t.me"]');
+  const modal = document.getElementById('president-modal');
+  if (!presidentLink || !modal) return;
+
+  presidentLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (typeof modal.showModal === 'function') {
+      modal.showModal();
+    } else {
+      modal.setAttribute('open', '');
+    }
+  });
+
+  const closeBtn = modal.querySelector('.confirm_modal_close');
+  const cancelBtn = modal.querySelector('.btn_cancel');
+  const confirmBtn = modal.querySelector('.btn_confirm');
+
+  const closeModal = () => {
+    if (typeof modal.close === 'function') {
+      modal.close();
+    } else {
+      modal.removeAttribute('open');
+    }
+  };
+
+  closeBtn?.addEventListener('click', closeModal);
+  cancelBtn?.addEventListener('click', closeModal);
+  confirmBtn?.addEventListener('click', () => {
+    closeModal();
+  });
+
+  // Close when clicking outside dialog container
+  modal.addEventListener('click', (e) => {
+    const box = modal.querySelector('.confirm_modal_box');
+    if (box && !box.contains(e.target)) {
+      closeModal();
+    }
+  });
 }
 
 // Smooth scroll-reveal observer: reveals cards as user scrolls pass them
